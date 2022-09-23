@@ -8,36 +8,35 @@ import L2_speed_control as sc
 import numpy as np
 from time import sleep
 
-# define some variables that can be used to create the path
-# make use of these definitions in the motions list
-pi = np.pi                  # utilize the numpy library to define pi
-d1 = 1.2                     # distance in meters of segment 1 in the path
-d2 = 1.6                      # distance in meters of segment 2 in the path
-forward_velocity = 0.4      # forward velocity (x dot) in m/s of SCUTTLE. NOTE that the max forward velocity of SCUTTLE is 0.4 m/s
+#t-22: these are the team-determined segment lengths and forward velocity for the SCUTTLE to follow to complete the s-shaped path.
+#t-22: these variables are not used in the following script but were used by the team to determine the ideal xdot (column 0 in motions) to be sent to the SCUTTLE.
+pi = np.pi
+d1 = 1.2
+d2 = 1.6
+forward_velocity = 0.4
 
-# below is a list setup to run through each motion segment to create the path.
-# the list elements within each list are in order as follows: chassis forward velocity (m/s), chassis angular velocity (rad/s), and motion duration (sec)
-# enter the chassis forward velocity (x dot) in m/s, chassis angular velocity (theta dot) in rad/s, and motion duration in sec for each motion to create the path
+#t-22: motions is the array being used to give seperate directions for SCUTTLE to follow, each row is taken into the for loop below.
+#t-22: Column 0 is the xdot, column 1 is thetadot, and column 2 is duration
 motions = [
     [0.4, 0.0, 3.0],            # Motion 1
     [0.0, 1.5, 1.0],            # Motion 2
-    [0.4, 0.0, 4.0],
-    [0.0, 1.5, 1.0],
-    [0.4, 0.0, 3.0],            
-    [0.0, -1.5, 1.0],           
-    [0.4, 0.0, 4.0],
-    [0.0, -1.5, 1.0],
-    [0.4, 0.0, 3.0],
-    [0.0, 0.0, 0.0],
+    [0.4, 0.0, 4.0],            # Motion 3
+    [0.0, 1.5, 1.0],            # Motion 4
+    [0.4, 0.0, 3.0],            # Motion 5            
+    [0.0, -1.5, 1.0],           # Motion 6           
+    [0.4, 0.0, 4.0],            # Motion 7
+    [0.0, -1.5, 1.0],           # Motion 8
+    [0.4, 0.0, 3.0],            # Motion 9
+    [0.0, 0.0, 0.0],            # Motion 10
 ]
 
-# iterate through and perform each open loop motion and then wait the specified duration.
-for  count, motion in enumerate(motions):
+for  count, motion in enumerate(motions): #T-22: following steps repeats for each row in the motions array
     print("Motion: ", count+1, "\t Chassis Forward Velocity (m/s): {:.2f} \t Chassis Angular Velocity (rad/s): {:.2f} \t Duration (sec): {:.2f}".format(motion[0], motion[1], motion[2]))
-    wheel_speeds = ik.getPdTargets(motion[:2])                  # take the forward speed(m/s) and turning speed(rad/s) and use inverse kinematics to deterimine wheel speeds
-    sc.driveOpenLoop(wheel_speeds)                              # take the calculated wheel speeds and use them to run the motors
-    sleep(motion[2])                                            # wait the motion duration
+    wheel_speeds = ik.getPdTargets(motion[:2])                  # t-22: converts the first 2 values in each row (xdot and thetatdot) to left and right wheel speeds
+    sc.driveOpenLoop(wheel_speeds)                              # t-22: converts target wheel speeds to PWM, splits them up and sends pdl to left wheel and pdr to the right wheel
+    sleep(motion[2])                                            # t-22: sleeps while driving instructions are being carried out for desired time from 3rd value in each row
         
+#Code for post lab question 3:        
 #    botSpeed = str(robotSpeedTarget[0])
 #    botDir = str(robotSpeedTarget[1])
 #    nodeWrite.tmpFile(botSpeed, "Speed")
