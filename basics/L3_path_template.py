@@ -41,8 +41,5 @@ for  count, motion in enumerate(motions): #T-22: following steps repeats for eac
 #    botDir = str(robotSpeedTarget[1])
 #    nodeWrite.tmpFile(botSpeed, "Speed")
 #    nodeWrite.tmpFile(botSpeed, "Direction")
-<<<<<<< HEAD
     
-=======
     
->>>>>>> a37fe3c4464ce13b5597914e838c6307150e01e8
