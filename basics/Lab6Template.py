@@ -32,7 +32,7 @@ def loop_drive():
     dt = 0  # delta in time
     de_dt = np.zeros(2) # initialize the de_dt
     
-    while(1):
+    while(count <40):
         count += 1 #count the number of times this loop has run
         # THIS CODE IS FOR OPEN AND CLOSED LOOP control
         pdTargets = np.array([9.7, 9.7]) # Input requested PhiDots (radians/s)
@@ -60,10 +60,10 @@ def loop_drive():
         # u_derivative = sc.u_derivative
         
         # THIS BLOCK OUTPUTS DATA TO A CSV FILE
-        if count == 1:  # check if this is the first iteration of the loop
-            log.clear_file() # clear old contents from the csv file
-            log.csv_write([count,pdCurrents[0], pdTargets[0]]) # log this iteration
-        elif count > 1 and count <= 400:  # only log 400 samples and then quit logging
-            log.csv_write([count,pdCurrents[0],pdTargets[0]]) # log this iteration
+        #if count == 1:  # check if this is the first iteration of the loop
+         #   log.clear_file() # clear old contents from the csv file
+          #  log.csv_write([count,pdCurrents[0], pdTargets[0]]) # log this iteration
+        #elif count > 1 and count <= 400:  # only log 400 samples and then quit logging
+         #   log.csv_write([count,pdCurrents[0],pdTargets[0]]) # log this iteration
             
 loop_drive() # call the function

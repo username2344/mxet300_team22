@@ -1,14 +1,21 @@
-# L3_color_tracking.py
-# This program was designed to have SCUTTLE following a target using a USB camera input
-
-import cv2              # For image capture and processing
-import numpy as np      
+import L1_lidar as ldr
+import L1_log as log
+import L2_vector as vect
+import Lab6Template as targetfind
+import cv2
+import numpy as np
 import L2_speed_control as sc
 import L2_inverse_kinematics as ik
 import L2_kinematics as kin
 import netifaces as ni
 from time import sleep
 from math import radians, pi
+from time import sleep
+
+# L3_color_tracking.py
+# This program was designed to have SCUTTLE following a target using a USB camera input
+
+
 
 # Gets IP to grab MJPG stream
 def getIp():
@@ -45,7 +52,7 @@ v1_max = 35     # Maximum H value
 v2_max = 255    # Maximum S value
 v3_max = 255    # Maximum V value
 
-target_width = 100      # Target pixel width of tracked object
+target_width = 60      # Target pixel width of tracked object
 angle_margin = 0.2      # Radians object can be from image center to be considered "centered"
 width_margin = 10       # Minimum width error to drive forward/back
 
@@ -110,15 +117,16 @@ def main():
                     sc.driveClosedLoop(wheel_speed, wheel_measured, 0)  # Drive closed loop
                     print("Angle: ", angle, " | Target L/R: ", *wheel_speed, " | Measured L\R: ", *wheel_measured, "| width", w)
                     continue
-
                 wheel_speed = ik.getPdTargets(np.array([0, -1.1*angle]))    # Find wheel speeds for only turning
 
                 sc.driveClosedLoop(wheel_speed, wheel_measured, 0)          # Drive robot
                 print("Angle: ", angle, " | Target L/R: ", *wheel_speed, " | Measured L\R: ", *wheel_measured, "| width", w)
 
+
+                
             else:
                 print("No targets")
-                sc.driveOpenLoop(np.array([0.,0.]))         # stop if no targets detected
+                targetfind.loop_drive         # stop if no targets detected
 
                 
     except KeyboardInterrupt: # condition added to catch a "Ctrl-C" event and exit cleanly
@@ -129,3 +137,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
